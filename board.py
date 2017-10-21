@@ -7,10 +7,13 @@ Created on Sat Sep 24 10:34:05 2016
 #import search
 #import numpy as np
 
-blank = [[0,0,0,0,0,0],[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0],[0,0,0,0,0,0],
-         [0,0,0,0,0,0],[0,0,0,0,0,0],
-         [0,0,0,0,0,0]]
+blank = [[0,0,0,0,0,0]
+        ,[0,0,0,0,0,0]
+        ,[0,0,0,0,0,0]
+        ,[0,0,0,0,0,0]
+        ,[0,0,0,0,0,0]
+        ,[0,0,0,0,0,0]
+        ,[0,0,0,0,0,0]]
 
 full =  [[0,0,0,2,2,1]
         ,[0,0,0,1,2,2]
@@ -62,19 +65,26 @@ full6 = [[0,0,1,2,2,1]
 
 class Board:
     def __init__(self):
-        self.state = full #blank
-        self.turn = 1
-        self.moves_player1 = []
-        self.moves_player2 = []
+        self.state = blank # the state of the game starts out as blank
+        self.turn = 1 # 1 for player one. 2 for player
+        self.previous_moves = []
+
 
     def generate_moves(self): # satisfies
+        '''
+         generate_moves(self)
+         Generate moves creates a list of all possible moves from current state and returns
+         @return
+        '''
         return_values = []
         for x in range(len(self.state)):
             if self.state[x][0] == 0:
                 return_values.append(x)
         return return_values
 
-    def make_move(self,c): # satisfies
+    # make_move: places a piece into a specified column, for the specific player whose turn it is
+    # @param c represents the column that that we want to drop our piece into
+    def make_move(self, c): # satisfies
         insert_to = self.state[c]
         x = 0
         while x < len(insert_to):
@@ -84,37 +94,35 @@ class Board:
                 insert_to[x -1] = self.turn
                 if self.turn == 1:
                     self.turn = 2;
-                    self.moves_player1.insert(0,c)
+                    self.previous_moves.insert(0, c)
 
                     return
                 else:
                     self.turn = 1
                     #self.moves_player2.insert(0,c)
-                    self.moves_player1.insert(0,c)
+                    self.previous_moves.insert(0, c)
                     return
 
             elif x == len(insert_to) -1:
                 insert_to[x] = self.turn
                 if self.turn == 1:
                     self.turn = 2;
-                    self.moves_player1.insert(0,c)
+                    self.previous_moves.insert(0, c)
                     return
                 else:
                     self.turn = 1
                     #self.moves_player2.insert(0,c)
-                    self.moves_player1.insert(0,c)
+                    self.previous_moves.insert(0, c)
                     return
 
             else:
                 x +=1
 
 
-
-
-
-
+    # unmake_last_move: reverses the game one step
+    # because they told us to
     def unmake_last_move(self): # satisfies
-        to_delete_from = self.state[self.moves_player1.pop()]
+        to_delete_from = self.state[self.previous_moves.pop()]
         for x in range(0, len(to_delete_from)):
             if to_delete_from[x] != 0:
                 to_delete_from[x] = 0;
@@ -122,12 +130,14 @@ class Board:
 
 
 
+    #last_move_won: checks to see if the the most recent move made a sequence of 4,
+    # in which case the game has been won by whoever's turn it is NOT
     def last_move_won(self):
-        x = self.moves_player1[0] # x index of the most recently inserted item
+        x = self.previous_moves[0] # x index of the most recently inserted item
         y = 0 # y index of the most recently item
         in_a_row = 0 # used to count number of items in a row
         value = 0   # most recently inserted item
-        column = self.state[self.moves_player1[0]]
+        column = self.state[self.previous_moves[0]]
         for num in range(0, len(column)):
             if column[num] != 0:
                 value = column[num]
@@ -269,10 +279,10 @@ class Board:
         return string
 
 
-# board = Board()
-#
-# board.make_move(0)
-# print board.last_move_won()
+board = Board()
+
+board.make_move(0)
+print board
 #
 #
 # board2 = Board()

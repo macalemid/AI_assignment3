@@ -32,15 +32,38 @@ min or max
 class Node:
 
     # type = bool
-    def __init__(self, type, board):
+    def __init__(self, isMaxNode, board):
         self.parent = None
         self.child = None
-        self.type = type
-        if type:
+        self.isMaxNode = isMaxNode
+        self.depth = 0
+        self.board = board
+
+        if isMaxNode:
             self.value = float('inf')
         else:
             self.value = float('-inf')
-        self.state = board
+
+    def get_grandparents_value(self):
+        if self.parent != None:
+            if self.parent.parent != None:
+                return self.parent.parent.value
+            # checks type of node. if max returns -inf else inf
+        elif self.isMaxNode: # if self.type == true this is a max node
+            float("-inf")
+        else:
+            float("inf")
+
+
+    '''
+        createChild: Creates a child and self and makes sure the parent and child pointers are aligned correctly
+       @return a new Node that is the child of self 
+    '''
+    def createChild(self):
+        child = copy.deepcopy(self)
+        child.parent = self
+        self.child = child
+        return child
 
 
 
@@ -48,20 +71,16 @@ def expand(frontier):
     current = frontier.pop()
     moves = current.generate_moves()
     for move in moves:
-        current.board.make_move(move)
-        child_to_current = copy.deepcopy(current)
-        child_to_current.parent = current
-        if child_to_current.type:
-            child_to_current.type = False
-            child_to_current.value = float('-inf')
+        child = current.creatChild()
+        child.board.make_move(move)
+        if child.type:     ############
+            child.type = False
+            child.value = float('-inf')  ######change this for get value of grandparent
         else:
-            child_to_current.type = False
-            child_to_current.value = float('inf')
-        frontier.insert(0, child_to_current)
+            child.type = False
+            child.value = float('inf') ############
+        frontier.insert(0, child)
     return frontier
-
-
-
 
 
 def minimax(b,depth):

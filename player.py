@@ -8,13 +8,17 @@ import board
 import search
 class Player:
     def __init__(self, board):
+        pass
         # TODO
         
     def make_move(self,c):
+        pass
         # TODO
     
     def get_move(self):
+        pass
         # TODO
     
     def __str__(self):
+        pass
         # TODO
