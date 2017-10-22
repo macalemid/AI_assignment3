@@ -73,6 +73,8 @@ class Board:
         self.previous_moves = []
 
 
+
+
     def generate_moves(self): # satisfies
         '''
          generate_moves(self)
@@ -148,15 +150,10 @@ class Board:
     # in which case the game has been won by whoever's turn it is NOT
     def last_move_won(self):
         x = self.previous_moves[0] # x index of the most recently inserted item
-        y = 0 # y index of the most recently item
+        y = self.find_y()   # y index of the most recently item
         in_a_row = 0 # used to count number of items in a row
-        value = 0   # most recently inserted item
+        value = self.state[x][y]   # most recently inserted item
         column = self.state[self.previous_moves[0]]
-        for num in range(0, len(column)):
-            if column[num] != 0:
-                value = column[num]
-                y = num
-                break
 
         # checks for 4 in a row bellow
         for num in range(y, len(column)): # check if it should be + 1 or not
@@ -208,7 +205,7 @@ class Board:
         tempx = x  # used to iterate through the matrix and keep x and y
         tempy = y
 
-        while tempx  >-1 and tempy < len(column):
+        while tempx  >-1 and tempy < len(column): # left down
             if self.state[tempx][tempy] == value:
                 in_a_row += 1
                 tempx -= 1
@@ -219,6 +216,8 @@ class Board:
                 tempx -= 1
                 tempy += 1
                 in_a_row = 0
+
+        in_a_row = 0
 
         tempx = x  # used to iterate through the matrix and keep x and y
         tempy = y
@@ -250,6 +249,7 @@ class Board:
                 in_a_row = 0
 
 
+        in_a_row = 0
 
 
         tempx = x  # used to iterate through the matrix and keep x and y
@@ -326,9 +326,9 @@ class Board:
 #
 #
 # print (board)
-
-
-
+#
+#
+#
 # board7 = Board()
 # board7.make_move(0)
 # print (board7.last_move_won())

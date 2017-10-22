@@ -8,6 +8,7 @@ import board
 #import numpy as np
 import math
 import copy
+import evalFunction
 
 
 
@@ -105,10 +106,35 @@ def expand(frontier):
         frontier.insert(0, child)
     return frontier
 
+# input: max depth(depth), list of node (frontier)
+# this goes through the entire tree and gives values to the nodes
+# this iterates throught frontier expanding and exploring in a depth first style until it reaches the maximum depth.
+#  when a max depth is reached, the evalFunction is called and values are updated.
+def explore(depth,frontier):
 
-def minimax(b,depth):
-    frontier = []
+    node = frontier[0]
+
+    while frontier is not []:
+        while frontier[0].depth != depth:
+            expand(frontier)
+
+        bottom = frontier.pop()
+        bottom.value == evalFunction.evalFunction(bottom.board)
+        bottom.parent.update_value()
+    return node
+
+
+# takes list of node (frontier) and updates the values of all parents to this node
+def update(frontier):
     pass
+
+
+
+
+
+def minimax(b,depth, frontier):
+    pass
+
     
 
 

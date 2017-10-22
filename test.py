@@ -3,6 +3,7 @@ from search import Node
 import search
 import board
 from board import Board
+import evalFunction as e
 class generalTests(unittest.TestCase):
     def test_createChild(self):
         n = Node(True, board.blank)
@@ -51,6 +52,15 @@ class generalTests(unittest.TestCase):
             self.assertEqual(node.value, float("inf"))
             self.assertEqual(node.depth, 1)
             self.assertFalse(node.board.last_move_won())
+
+        search.expand(frontier)
+        self.assertEqual(len(frontier), 13)
+        self.assertFalse(node.board.last_move_won())
+
+    def test_explore(self):
+        frontier = [Node(True, Board())]
+        search.explore(2,frontier)
+
 
 
 
