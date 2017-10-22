@@ -63,6 +63,9 @@ full6 = [[0,0,1,2,2,1]
         ,[0,0,0,0,0,0]
         ,[0,0,0,0,0,0]]
 
+
+
+
 class Board:
     def __init__(self):
         self.state = blank # the state of the game starts out as blank
@@ -117,6 +120,17 @@ class Board:
 
             else:
                 x +=1
+
+    # input void. output void.
+    # returns the depth of the most recently inserted item
+    def find_y(self):
+        depth = 0 # used to count depth
+        for x in self.state[self.previous_moves[0]]: # iterates through the column of the most recently inserted item
+            if x != 0: # first non zero number will be the most recently inserted
+                return depth # returns the depth of the most recently inserted
+            else:
+                depth += 1 # adds one to the depth
+
 
 
     # unmake_last_move: reverses the game one step
@@ -279,44 +293,46 @@ class Board:
         return string
 
 
-board = Board()
-
-board.make_move(0)
-print board
+# board = Board()
+#
+# board.make_move(0)
+# print (board)
 #
 #
 # board2 = Board()
 # board2.state = full2
 # board2.make_move(3)
-# print board2.last_move_won()
+# print (board2.last_move_won())
 #
 # board3 = Board()
 # board3.state = full3
 # board3.make_move(0)
-# print board3.last_move_won()
+# print (board3.last_move_won())
 #
 # board4 = Board()
 # board4.state = full4
 # board4.make_move(3)
-# print board4.last_move_won()
+# print (board4.last_move_won())
 #
 # board5 = Board()
 # board5.state = full5
 # board5.make_move(2)
-# print board5.last_move_won()
+# print (board5.last_move_won())
 #
 # board6 = Board()
 # board6.state = full6
 # board6.make_move(2)
-# print board6.last_move_won()
+# print (board6.last_move_won())
 #
 #
-# print board.__str__()
-#
+# print (board)
 
 
 
-
-
+# board7 = Board()
+# board7.make_move(0)
+# print (board7.last_move_won())
+# print (board7.previous_moves[0])
+# print (board7)
 
     

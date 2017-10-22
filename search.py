@@ -40,19 +40,30 @@ class Node:
         self.board = board
 
         if isMaxNode:
-            self.value = float('inf')
-        else:
             self.value = float('-inf')
-
-    def get_grandparents_value(self):
-        if self.parent != None:
-            if self.parent.parent != None:
-                return self.parent.parent.value
-            # checks type of node. if max returns -inf else inf
-        elif self.isMaxNode: # if self.type == true this is a max node
-            float("-inf")
         else:
-            float("inf")
+            self.value = float('inf')
+
+    # takes nothing, returns nothing.
+    # if there is a granparent, self.value is changed to that of its grandparent.
+    # if there is not a grandparent, then self.value is set to either inf or -inf depending on whether or not it is max, or min
+    def get_grandparents_value(self): #
+        if self.parent != None: # checks if the parent is not null
+            if self.parent.parent != None: # checks if the grandparent (parent of parent) is not null
+               self.value = self.parent.parent.value # changes self.value to that of its grandparent
+
+            elif self.isMaxNode:  # checks if node is max
+                self.value = float("-inf")  # changes node's value to be -infinity
+
+            else:
+                self.value = float("inf")  # changes node's value to be infinity
+
+        elif self.isMaxNode: # checks if node is max
+            self.value = float("-inf") # changes node's value to be -infinity
+
+        else:
+            self.value =float("inf") # changes node's value to be infinity
+
 
 
     '''
@@ -63,22 +74,34 @@ class Node:
         child = copy.deepcopy(self)
         child.parent = self
         self.child = child
+        child.depth = self.depth + 1
+        if child.isMaxNode:
+            child.isMaxNode = False
+        else:
+            child.isMaxNode = True
         return child
+
+    # return None. input None
+    # looks at the child node.
+    # if the value of the child node is better the parent nodes value is updated to be the child's
+    def update_value(self):
+        if self.child is not None:
+            if self.isMaxNode:   # if this node is a max node
+              if self.child.value > self.value: # if the value of child is greater
+                 self.value = self.child.value # update the height to be that of child's
+            elif self.child.value < self.value: # if this node is a min node and the value of child's is less
+             self.value = self.child.value # this nodes value is updated to be that of child's
+
 
 
 
 def expand(frontier):
     current = frontier.pop()
-    moves = current.generate_moves()
+    moves = current.board.generate_moves()
     for move in moves:
-        child = current.creatChild()
+        child = current.createChild()
         child.board.make_move(move)
-        if child.type:     ############
-            child.type = False
-            child.value = float('-inf')  ######change this for get value of grandparent
-        else:
-            child.type = False
-            child.value = float('inf') ############
+        child.get_grandparents_value()
         frontier.insert(0, child)
     return frontier
 
