@@ -57,9 +57,23 @@ class generalTests(unittest.TestCase):
         self.assertEqual(len(frontier), 13)
         self.assertFalse(node.board.last_move_won())
 
-    def test_explore(self):
-        frontier = [Node(True, Board())]
-        search.explore(2,frontier)
+    def test_evalFunction(self):
+        # print(len(Board().state[0]))
+        blank = [
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0]
+        ]
+        e.evalFunction(blank)
+        # self.assertEqual(e.evalFunction(Board().state), 0);
+
+
+        # def test_explore(self):
+        #     frontier = [Node(True, Board())]
+        #     search.explore(2, frontier)
 
 
 

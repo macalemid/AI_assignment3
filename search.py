@@ -97,12 +97,12 @@ class Node:
 
 
 def expand(frontier):
-    current = frontier.pop()
-    moves = current.board.generate_moves()
+    current = frontier.pop() #remove first element
+    moves = current.board.generate_moves() #moves: list from 0, 6
     for move in moves:
         child = current.createChild()
         child.board.make_move(move)
-        child.get_grandparents_value()
+        child.get_grandparents_value() #grandparents_value() get the value of nearest min/max node ancestor, also updates
         frontier.insert(0, child)
     return frontier
 
@@ -110,18 +110,14 @@ def expand(frontier):
 # this goes through the entire tree and gives values to the nodes
 # this iterates throught frontier expanding and exploring in a depth first style until it reaches the maximum depth.
 #  when a max depth is reached, the evalFunction is called and values are updated.
-def explore(depth,frontier):
-
-    node = frontier[0]
-
+def explore(depthLimit, frontier):
     while frontier is not []:
-        while frontier[0].depth != depth:
+        while frontier[0].depth != depthLimit:
             expand(frontier)
 
         bottom = frontier.pop()
-        bottom.value == evalFunction.evalFunction(bottom.board)
+        bottom.value = evalFunction.evalFunction(bottom.board.state)
         bottom.parent.update_value()
-    return node
 
 
 # takes list of node (frontier) and updates the values of all parents to this node
