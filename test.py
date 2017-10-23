@@ -10,9 +10,56 @@ import utils
 class generalTests(unittest.TestCase):
     def test_createChild(self):
         n = Node(True, board.blank)
-        child = n.createChild();
-        self.assertEqual(child.parent, n);
+        child = n.createChild()
+        self.assertEqual(child.parent, n)
 
+    def test_Board_generateMoves(self):
+        aBoardState = utils.transpose_back([
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0]
+        ])
+        b = Board()
+        b.state = aBoardState
+        moves = b.generate_moves()
+        self.assertEqual(moves, [0, 1, 2, 3, 4, 5, 6])
+        aBoardState = utils.transpose_back([
+            [1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0]
+        ])
+        b.state = aBoardState
+        moves = b.generate_moves()
+        self.assertEqual(moves, [1, 2, 3, 4, 5, 6])
+
+        aBoardState = utils.transpose_back([
+            [1, 0, 0, 1, 0, 0, 1],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0]
+        ])
+        b.state = aBoardState
+        moves = b.generate_moves()
+        self.assertEqual(moves, [1, 2, 4, 5])
+        aBoardState = utils.transpose_back([
+            [1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0]
+        ])
+        b.state = aBoardState
+        moves = b.generate_moves()
+        self.assertEqual(moves, [])
 
     def test_Board_makeMove(self):
         b = Board()
@@ -74,15 +121,14 @@ class generalTests(unittest.TestCase):
         self.assertFalse(node.board.last_move_won())
 
     def test_evalFunction(self):
-        # print(len(Board().state[0]))
         self.assertEqual(e.evalFunction(Board().transpose()), 0);
-        b = Board()
 
 
 
-        # def test_explore(self):
-        #     frontier = [Node(True, Board())]
-        #     search.explore(2, frontier)
+        def test_explore(self):
+            b = Node(True, Board())
+            frontier = [b]
+            search.explore(2, frontier)
 
 
 

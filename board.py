@@ -151,6 +151,7 @@ class Board:
                 to_delete_from[x] = 0
                 self._switchTurns()
                 return
+        raise ValueError("That move cannot be undone")
 
 
 
