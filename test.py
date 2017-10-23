@@ -4,11 +4,27 @@ import search
 import board
 from board import Board
 import evalFunction as e
+import utils
+
+
 class generalTests(unittest.TestCase):
     def test_createChild(self):
         n = Node(True, board.blank)
         child = n.createChild();
         self.assertEqual(child.parent, n);
+
+
+    def test_Board_makeMove(self):
+        b = Board()
+        self.assertEqual(utils.transpose(b.state)[5], [0,0,0,0,0,0,0])
+        b.make_move(1)
+        self.assertEqual(utils.transpose(b.state)[5], [0,1,0,0,0,0,0])
+        b.make_move(1)
+        self.assertEqual(utils.transpose(b.state)[4], [0,2,0,0,0,0,0])
+        b.make_move(6)
+        self.assertEqual(utils.transpose(b.state)[5], [0,1,0,0,0,0,1])
+        b.make_move(5)
+        self.assertEqual(utils.transpose(b.state)[5], [0,1,0,0,0,2,1])
 
     def test_get_grandparents_value(self):
         board2 = Board()

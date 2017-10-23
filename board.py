@@ -77,6 +77,14 @@ class Board:
         return new_matrix
 
 
+    def _switchTurns(self):
+        if self.turn == 1:
+            self.turn = 2
+        elif self.turn == 2:
+            self.turn = 1
+        else: raise ValueError("turn is equal to a number other than 1 or two");
+
+
 
     def generate_moves(self): # satisfies
         '''
@@ -97,17 +105,14 @@ class Board:
         x = 0
         while x < len(insert_to):
 
-
             if insert_to[x] != 0:
                 insert_to[x -1] = self.turn
                 if self.turn == 1:
-                    self.turn = 2;
+                    self.turn = 2
                     self.previous_moves.insert(0, c)
-
                     return
                 else:
                     self.turn = 1
-                    #self.moves_player2.insert(0,c)
                     self.previous_moves.insert(0, c)
                     return
 
@@ -119,7 +124,6 @@ class Board:
                     return
                 else:
                     self.turn = 1
-                    #self.moves_player2.insert(0,c)
                     self.previous_moves.insert(0, c)
                     return
 
@@ -144,7 +148,8 @@ class Board:
         to_delete_from = self.state[self.previous_moves.pop()]
         for x in range(0, len(to_delete_from)):
             if to_delete_from[x] != 0:
-                to_delete_from[x] = 0;
+                to_delete_from[x] = 0
+                self._switchTurns()
                 return
 
 
