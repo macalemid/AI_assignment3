@@ -7,18 +7,17 @@ Created on Wed Sep 28 19:21:51 2016
 import board
 import search
 class Player:
-    def __init__(self, board):
-        pass
+    def __init__(self, board, name):
+        self.board = board
+        self.name = name
         # TODO
         
-    def make_move(self,c):
-        pass
-        # TODO
-    
+    def make_move(self, c):
+        self.board.make_move(c)
+
     def get_move(self):
         pass
         # TODO
     
     def __str__(self):
-        pass
-        # TODO
+        return "name: %s", self.name

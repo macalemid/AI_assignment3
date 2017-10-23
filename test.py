@@ -106,6 +106,11 @@ class generalTests(unittest.TestCase):
         node3.update_value()
         self.assertEqual(node3.value, 10)
 
+        self.assertEqual(node1.children[0].children[0], node3)
+        self.assertEqual(node1.children[0], node2)
+        self.assertEqual(node3.parent.parent, node1)
+        self.assertEqual(node3.parent, node2)
+
     def test_expand_procedure(self):
         frontier = [Node(True, Board())]
         search.expand(frontier)
@@ -121,14 +126,23 @@ class generalTests(unittest.TestCase):
         self.assertFalse(node.board.last_move_won())
 
     def test_evalFunction(self):
-        self.assertEqual(e.evalFunction(Board().transpose()), 0);
+        self.assertEqual(e.evalFunction(Board().transpose()), 0)
 
 
 
-        def test_explore(self):
-            b = Node(True, Board())
-            frontier = [b]
-            search.explore(2, frontier)
+    def test_explore(self):
+        b = Node(True, Board())
+        frontier = [b]
+        search.explore(5, frontier)
+        for child in b.children:
+            for grandchild in child.children:
+                print(grandchild.value)
+
+
+    def test_search_minimax(self):
+        b = Board()
+        i = search.minimax(b, 6)
+        print(i)
 
 
 
