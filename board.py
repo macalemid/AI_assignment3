@@ -6,75 +6,28 @@ Created on Sat Sep 24 10:34:05 2016
 """
 #import search
 #import numpy as np
-
-blank = [[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]]
-
-full =  [[0,0,0,2,2,1]
-        ,[0,0,0,1,2,2]
-        ,[0,0,0,0,1,2]
-        ,[0,0,0,0,0,1]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]]
-
-full2 = [[0,0,1,2,2,1]
-        ,[0,0,0,1,2,2]
-        ,[0,0,0,0,1,2]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]]
-
-full3 = [[0,0,0,0,0,0]
-        ,[0,0,0,0,1,2]
-        ,[0,0,0,1,2,2]
-        ,[0,0,1,1,2,1]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]]
-
-full4 = [[0,0,0,0,0,1]
-        ,[0,0,0,0,1,2]
-        ,[0,0,0,1,2,2]
-        ,[0,0,0,1,2,1]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]]
-
-full5 = [[0,0,0,0,0,1]
-        ,[0,0,0,0,1,2]
-        ,[0,0,0,0,2,2]
-        ,[0,0,1,1,2,1]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]]
-
-full6 = [[0,0,1,2,2,1]
-        ,[0,0,0,1,2,2]
-        ,[0,0,0,0,0,2]
-        ,[0,0,0,0,0,1]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]
-        ,[0,0,0,0,0,0]]
+import copy
 
 
-
+blank = [
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0]
+]
 
 class Board:
     def __init__(self):
-        self.state = blank # the state of the game starts out as blank
-        self.turn = 1 # 1 for player one. 2 for player
-        self.previous_moves = []
+        self.state = copy.deepcopy(blank) # the state of the game starts out as blank
+        self._turn = 1 # 1 for player one. 2 for player
+        self._previous_move_col = [] # list containing the column where the piece was inserted for use in backtracking
 
 
 
 
+#CHECK
     def generate_moves(self): # satisfies
         '''
          generate_moves(self)
@@ -82,52 +35,46 @@ class Board:
          @return
         '''
         return_values = []
-        for x in range(len(self.state)):
-            if self.state[x][0] == 0:
-                return_values.append(x)
+        for i in range(len(self.state[0])):
+            if self.state[0][i] == 0: # looks at top layer
+                return_values.append(i)
         return return_values
 
+
+
+    def _shouldGoToNextRow(self, row, col):
+        try:
+            if self.state[row + 1][col] == 0:
+                return True
+        except IndexError:
+            return False
+        return False
+
+
+    def _switchTurns(self):
+        if self._turn == 1:
+            self._turn = 2
+        elif self._turn == 2:
+            self._turn = 1
+        else: raise ValueError("turn is equal to a number other than 1 or two");
+
     # make_move: places a piece into a specified column, for the specific player whose turn it is
-    # @param c represents the column that that we want to drop our piece into
-    def make_move(self, c): # satisfies
-        insert_to = self.state[c]
-        x = 0
-        while x < len(insert_to):
-
-
-            if insert_to[x] != 0:
-                insert_to[x -1] = self.turn
-                if self.turn == 1:
-                    self.turn = 2;
-                    self.previous_moves.insert(0, c)
-
-                    return
-                else:
-                    self.turn = 1
-                    #self.moves_player2.insert(0,c)
-                    self.previous_moves.insert(0, c)
-                    return
-
-            elif x == len(insert_to) -1:
-                insert_to[x] = self.turn
-                if self.turn == 1:
-                    self.turn = 2;
-                    self.previous_moves.insert(0, c)
-                    return
-                else:
-                    self.turn = 1
-                    #self.moves_player2.insert(0,c)
-                    self.previous_moves.insert(0, c)
-                    return
-
-            else:
-                x +=1
+    # @param col represents the column that that we want to drop our piece into
+    def make_move(self, col): # satisfies
+        for row in range (0, len(self.state[0])):
+            currentElement = self.state[row][col]
+            if currentElement == 0 and not self._shouldGoToNextRow(row, col):
+                self.state[row][col] = self._turn
+                self._previous_move_col.append(col);
+                self._switchTurns()
+                return
+        raise ValueError("Either the make move function has gone wrong, or you have tried to insert into a full column")
 
     # input void. output void.
     # returns the depth of the most recently inserted item
     def find_y(self):
         depth = 0 # used to count depth
-        for x in self.state[self.previous_moves[0]]: # iterates through the column of the most recently inserted item
+        for x in self.state[self._previous_move_col[0]]: # iterates through the column of the most recently inserted item
             if x != 0: # first non zero number will be the most recently inserted
                 return depth # returns the depth of the most recently inserted
             else:
@@ -138,22 +85,26 @@ class Board:
     # unmake_last_move: reverses the game one step
     # because they told us to
     def unmake_last_move(self): # satisfies
-        to_delete_from = self.state[self.previous_moves.pop()]
-        for x in range(0, len(to_delete_from)):
-            if to_delete_from[x] != 0:
-                to_delete_from[x] = 0;
-                return
+        if self._previous_move_col != []:
+            col = self._previous_move_col.pop() # a number represing column of previous insertion
+            for row in range(0, len(self.state)): # iterate through columns
+                if self.state[row][col] != 0:
+                    self.state[row][col] = 0
+                    self._switchTurns()
+                    return
+        raise ValueError("It seems that you have tried to undo a move when there are no moves to be undone, or there is an error in your function")
+
 
 
 
     #last_move_won: checks to see if the the most recent move made a sequence of 4,
     # in which case the game has been won by whoever's turn it is NOT
     def last_move_won(self):
-        x = self.previous_moves[0] # x index of the most recently inserted item
+        x = self._previous_move_col[0] # x index of the most recently inserted item
         y = self.find_y()   # y index of the most recently item
         in_a_row = 0 # used to count number of items in a row
         value = self.state[x][y]   # most recently inserted item
-        column = self.state[self.previous_moves[0]]
+        column = self.state[self._previous_move_col[0]]
 
         # checks for 4 in a row bellow
         for num in range(y, len(column)): # check if it should be + 1 or not
@@ -285,11 +236,9 @@ class Board:
         return False
 
     def __str__(self):
-        string = " "
-        for y in range(0, len(self.state[0])):
-            for x in range(0, len(self.state)):
-                string += " " + str(self.state[x][y])
-            string += "\n "
+        string = ""
+        for row in self.state:
+            string += str(row) + "\n"
         return string
 
 
