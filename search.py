@@ -4,7 +4,6 @@ Created on Sun Sep 25 13:00:29 2016
 
 @author: Ajinkya
 """
-import board
 import copy
 import evalFunction
 
@@ -139,12 +138,6 @@ def expand(frontier):
 #         if bottom.parent != None:
 #             bottom.parent.update_value()
 
-def explore(depthLimit, frontier):
-    pass
-
-# takes list of node (frontier) and updates the values of all parents to this node
-def update(frontier):
-    pass
 
 
 def updateEnds(largestNodeSeen, smallestNodeSeen, bottom):
@@ -196,14 +189,18 @@ def minimax(board, depthLimit):
                 return -1
             else:
                 return smallestNodeSeen.board.previous_moves.pop()
-
     raise ValueError("There seems to have been an error in minimax... nice try though")
 
 
 
 
 def minimax_root(b,depth):
-    pass
+    result = minimax(b, depth)
+    if result == -1 or result == 1:
+        return (result, None)
+    else:
+        return (0, result)
+
 
 
 

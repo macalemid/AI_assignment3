@@ -158,6 +158,9 @@ class Board:
     #last_move_won: checks to see if the the most recent move made a sequence of 4,
     # in which case the game has been won by whoever's turn it is NOT
     def last_move_won(self):
+
+        if self.previous_moves == []:
+            return False
         x = self.previous_moves[0] # x index of the most recently inserted item
         y = self.find_y()   # y index of the most recently item
         in_a_row = 0 # used to count number of items in a row

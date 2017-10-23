@@ -130,19 +130,18 @@ class generalTests(unittest.TestCase):
 
 
 
-    def test_explore(self):
-        b = Node(True, Board())
-        frontier = [b]
-        search.explore(5, frontier)
-        for child in b.children:
-            for grandchild in child.children:
-                print(grandchild.value)
+    # def test_explore(self):
+    #     b = Node(True, Board())
+    #     frontier = [b]
+    #     search.explore(5, frontier)
+    #     for child in b.children:
+    #         for grandchild in child.children:
+    #             print(grandchild.value)
 
 
     def test_search_minimax(self):
         b = Board()
-        i = search.minimax(b, 6)
-        print(i)
+        i = search.minimax(b, 3)
 
 
 

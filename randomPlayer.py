@@ -11,7 +11,7 @@ class Player:
     
     def get_move(self):
         col = random.randint(0, 6)
-        while (self.b.board[5][col] != 0):
+        while (self.b.state[5][col] != 0):
             col = random.randint(0, 6)
         print(str(col))
         return (0, col)

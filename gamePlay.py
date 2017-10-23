@@ -21,7 +21,7 @@ def valid(b, move):
     representing the player, and a number representing the position,
     return true if the position is a valid
     move """
-    return validPos(move) and b.board[5][move] == 0
+    return validPos(move) and b.state[5][move] == 0
 
 
 def validPos(x):
