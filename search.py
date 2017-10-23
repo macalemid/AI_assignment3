@@ -5,8 +5,6 @@ Created on Sun Sep 25 13:00:29 2016
 @author: Ajinkya
 """
 import board
-#import numpy as np
-import math
 import copy
 import evalFunction
 

@@ -59,16 +59,7 @@ class generalTests(unittest.TestCase):
 
     def test_evalFunction(self):
         # print(len(Board().state[0]))
-        blank = [
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0]
-        ]
-        e.evalFunction(blank)
-        # self.assertEqual(e.evalFunction(Board().state), 0);
+        self.assertEqual(e.evalFunction(Board().transpose()), 0);
 
 
         # def test_explore(self):

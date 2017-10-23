@@ -4,8 +4,7 @@ Created on Sat Sep 24 10:34:05 2016
 
 @author: Ajinkya
 """
-#import search
-#import numpy as np
+import copy
 
 blank = [[0,0,0,0,0,0]
         ,[0,0,0,0,0,0]
@@ -64,14 +63,18 @@ full6 = [[0,0,1,2,2,1]
         ,[0,0,0,0,0,0]]
 
 
-
-
 class Board:
     def __init__(self):
-        self.state = blank # the state of the game starts out as blank
+        self.state = copy.deepcopy(blank) # the state of the game starts out as blank
         self.turn = 1 # 1 for player one. 2 for player
         self.previous_moves = []
 
+    def transpose(self):
+        new_matrix = [[], [], [], [], [], []]
+        for x in range(0, 7):
+            for y in range(0, 6):
+                new_matrix[y].append(self.state[x][y])
+        return new_matrix
 
 
 
