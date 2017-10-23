@@ -60,6 +60,8 @@ class generalTests(unittest.TestCase):
     def test_evalFunction(self):
         # print(len(Board().state[0]))
         self.assertEqual(e.evalFunction(Board().transpose()), 0);
+        b = Board()
+
 
 
         # def test_explore(self):
